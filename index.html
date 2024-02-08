@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Traductor XML ISO 20022</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <h1>Traductor XML ISO 20022</h1>
+    <form id="xml_form">
+        <textarea id="xml_input" name="xml_input" placeholder="Pegue el contenido XML aquí..." style="width: 100%; height: 200px;"></textarea>
+        <br>
+        <input type="submit" id="submit_button" value="Analizar XML">
+    </form>
+    <div id="result"></div>
+
+    <script>
+        $(document).ready(function() {
+            $('#xml_form').submit(function(event) {
+                event.preventDefault();
+                $.ajax({
+                    type: 'POST',
+                    url: '/analyze',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        $('#result').html(JSON.stringify(response)); // Ajustar para mostrar la respuesta adecuadamente
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error al enviar la solicitud:', error);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

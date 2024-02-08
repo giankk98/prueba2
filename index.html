@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Traductor XML ISO 20022</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <h1>Traductor XML ISO 20022</h1>
+    <form id="xml_form">
+        <textarea id="xml_input" name="xml_input" placeholder="Pegue el contenido XML aquí..." style="width: 100%; height: 200px;"></textarea>
+        <br>
+        <input type="submit" value="Analizar XML">
+    </form>
+    <div id="result"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var form = document.getElementById("xml_form");
+            var resultDiv = document.getElementById("result");
+
+            form.onsubmit = function(event) {
+                event.preventDefault(); // Evitar el envío tradicional del formulario
+
+                fetch("/analyze", {
+                    method: "POST",
+                    body: new FormData(form),
+                })
+                .then(response => response.json()) // Espera una respuesta en formato JSON
+                .then(data => {
+                    // Muestra la respuesta. Ajusta esta parte según cómo quieras presentar los datos.
+                    resultDiv.innerHTML = JSON.stringify(data, null, 2);
+                })
+                .catch(error => {
+                    console.error('Error al enviar la solicitud:', error);
+                    resultDiv.innerHTML = "Error al procesar la solicitud.";
+                });
+            };
+        });
+    </script>
+</body>
+</html>
